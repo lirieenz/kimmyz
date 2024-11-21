@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Wishlist</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main container -->
+    <div class="container">
+        <!-- Left: Form section -->
+        <div class="form-section">
+            <h2>Add Wishlist</h2>
+            <form id="wishlistForm">
+                <input type="text" id="codename" placeholder="Your codename" required>
+                <input type="url" id="wishlistLink1" placeholder="Your wishlist link" required>
+                <input type="url" id="wishlistLink2" placeholder="Your second wishlist link (optional)">
+                <input type="url" id="wishlistLink3" placeholder="Your third wishlist link (optional)">
+                <button type="submit">Add to Wishlist</button>
+            </form>
+        </div>
+
+        <!-- Right: Wishlist display section -->
+        <div class="wishlist-section">
+            <h2>All Wishlists</h2>
+            <div id="wishlistContainer"></div>
+        </div>
+    </div>
+
+    <!-- Use ES Module Script for Firebase -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDt7EZPNdFR2Bk-f5UscJlzYfrAeuQIB_M",
+            authDomain: "ambot-e9d94.firebaseapp.com",
+            databaseURL: "https://ambot-e9d94-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "ambot-e9d94",
+            storageBucket: "ambot-e9d94.firebasestorage.app",
+            messagingSenderId: "12083952544",
+            appId: "1:12083952544:web:1af1cd97c09ca948cbc2c5",
+            measurementId: "G-99VF17TSEK"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const wishlistRef = ref(database, "wishlist");
+
+        // Handle form submission
+        document.getElementById("wishlistForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const codename = document.getElementById("codename").value.trim();
+            const wishlistLink1 = document.getElementById("wishlistLink1").value.trim();
+            const wishlistLink2 = document.getElementById("wishlistLink2").value.trim();
+            const wishlistLink3 = document.getElementById("wishlistLink3").value.trim();
+
+            // Collect all the non-empty links into an array
+            const wishlistLinks = [wishlistLink1, wishlistLink2, wishlistLink3].filter(link => link !== "");
+
+            if (codename && wishlistLinks.length > 0) {
+                // Push data to Firebase
+                push(wishlistRef, { codename, wishlistLinks })
+                    .then(() => {
+                        console.log("Data added successfully");
+                    })
+                    .catch((error) => {
+                        console.error("Error adding data to Firebase:", error);
+                    });
+
+                // Clear the form
+                document.getElementById("wishlistForm").reset();
+            } else {
+                console.error("Both codename and at least one wishlist link are required.");
+            }
+        });
+
+        // Listen for changes in the database and update the UI
+        onValue(wishlistRef, (snapshot) => {
+            const wishlistContainer = document.getElementById("wishlistContainer");
+            wishlistContainer.innerHTML = ""; // Clear previous content
+
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach((key) => {
+                    const item = data[key];
+                    const wishlistDiv = document.createElement("div");
+                    wishlistDiv.className = "wishlist-item";
+                    wishlistDiv.innerHTML = `
+                        <strong>${item.codename}</strong><br>
+                        ${item.wishlistLinks.map(link => `<a href="${link}" target="_blank">${link}</a><br>`).join("")}
+                    `;
+                    wishlistContainer.appendChild(wishlistDiv);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
