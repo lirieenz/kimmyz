@@ -97,3 +97,51 @@ body {
 .wishlist-item a:hover {
     text-decoration: underline;
 }
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+    /* Tablets: Stack the containers vertically */
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .form-section, .wishlist-section {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #ccc;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Smartphones: Make the form and wishlist sections smaller */
+    .form-section {
+        width: 80%;
+    }
+
+    .wishlist-section {
+        width: 100%;
+    }
+
+    .form-section input,
+    .form-section button {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Mobile view: Adjust font size and layout for smaller screens */
+    .form-section h2,
+    .wishlist-section h2 {
+        font-size: 18px;
+    }
+
+    .form-section input,
+    .form-section button {
+        font-size: 14px;
+    }
+
+    .wishlist-item {
+        padding: 8px;
+    }
+}
