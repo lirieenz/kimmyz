@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Main container -->
     <div class="container">
-        <!-- Left: Form section -->
         <div class="form-section">
             <h2>Add Wishlist</h2>
             <form id="wishlistForm">
@@ -21,20 +19,16 @@
             </form>
         </div>
 
-        <!-- Right: Wishlist display section -->
         <div class="wishlist-section">
             <h2>All Wishlists</h2>
             <div id="wishlistContainer"></div>
         </div>
     </div>
 
-    <!-- Use ES Module Script for Firebase -->
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
         import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDt7EZPNdFR2Bk-f5UscJlzYfrAeuQIB_M",
             authDomain: "ambot-e9d94.firebaseapp.com",
@@ -46,12 +40,10 @@
             measurementId: "G-99VF17TSEK"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const wishlistRef = ref(database, "wishlist");
 
-        // Handle form submission
         document.getElementById("wishlistForm").addEventListener("submit", (e) => {
             e.preventDefault();
 
@@ -60,11 +52,9 @@
             const wishlistLink2 = document.getElementById("wishlistLink2").value.trim();
             const wishlistLink3 = document.getElementById("wishlistLink3").value.trim();
 
-            // Collect all the non-empty links into an array
             const wishlistLinks = [wishlistLink1, wishlistLink2, wishlistLink3].filter(link => link !== "");
 
             if (codename && wishlistLinks.length > 0) {
-                // Push data to Firebase
                 push(wishlistRef, { codename, wishlistLinks })
                     .then(() => {
                         console.log("Data added successfully");
@@ -73,17 +63,15 @@
                         console.error("Error adding data to Firebase:", error);
                     });
 
-                // Clear the form
                 document.getElementById("wishlistForm").reset();
             } else {
                 console.error("Both codename and at least one wishlist link are required.");
             }
         });
 
-        // Listen for changes in the database and update the UI
         onValue(wishlistRef, (snapshot) => {
             const wishlistContainer = document.getElementById("wishlistContainer");
-            wishlistContainer.innerHTML = ""; // Clear previous content
+            wishlistContainer.innerHTML = "";
 
             const data = snapshot.val();
             if (data) {

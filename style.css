@@ -1,44 +1,34 @@
-/* Fullscreen layout */
 body {
     font-family: Arial, sans-serif;
-    background-image: url(bg.jpg); /* Update this to your image path */
+    background-image: url(bg.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     margin: 0;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    height: 100vh;
 }
 
-/* Main container for the two rectangles */
 .container {
-    display: flex;
     width: 80%;
-    height: 70%;
-    background: rgba(255, 255, 255, 0.9); /* White with some transparency */
+    max-width: 600px;
+    background-color: white;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* Left rectangle (form section) */
 .form-section {
-    width: 30%;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-right: 2px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px 0 0 15px;
+    margin-bottom: 20px;
 }
 
 .form-section h2 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #333;
+    text-align: center;
 }
 
 .form-section input,
@@ -48,6 +38,7 @@ body {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .form-section button {
@@ -61,87 +52,62 @@ body {
     background-color: #218838;
 }
 
-/* Right rectangle (wishlist display section) */
 .wishlist-section {
-    width: 70%;
-    padding: 20px;
+    max-height: 250px;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0 15px 15px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
 
 .wishlist-section h2 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    text-align: center;
     color: #333;
 }
 
 .wishlist-item {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
+    background-color: white;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .wishlist-item strong {
+    display: block;
+    margin-bottom: 5px;
     color: #333;
+    font-size: 14px;
 }
 
 .wishlist-item a {
     color: #007bff;
     text-decoration: none;
+    font-size: 14px;
+    word-break: break-all;
 }
 
 .wishlist-item a:hover {
     text-decoration: underline;
 }
 
-/* Media queries for responsiveness */
-@media (max-width: 1024px) {
-    /* Tablets: Stack the containers vertically */
-    .container {
-        flex-direction: column;
-        height: auto;
-    }
-
-    .form-section, .wishlist-section {
-        width: 100%;
-        border-right: none;
-        border-bottom: 2px solid #ccc;
-    }
-}
-
-@media (max-width: 768px) {
-    /* Smartphones: Make the form and wishlist sections smaller */
-    .form-section {
-        width: 80%;
-    }
-
-    .wishlist-section {
-        width: 100%;
-    }
-
-    .form-section input,
-    .form-section button {
-        padding: 12px;
-    }
-}
-
 @media (max-width: 480px) {
-    /* Mobile view: Adjust font size and layout for smaller screens */
-    .form-section h2,
-    .wishlist-section h2 {
-        font-size: 18px;
+    .container {
+        width: 90%;
+        padding: 15px;
     }
 
     .form-section input,
     .form-section button {
         font-size: 14px;
+        padding: 8px;
     }
 
     .wishlist-item {
-        padding: 8px;
+        font-size: 12px;
     }
 }

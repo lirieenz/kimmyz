@@ -1,4 +1,3 @@
-// Firebase configuration (replace with your Firebase config)
 const firebaseConfig = {
     apiKey: "AIzaSyDt7EZPNdFR2Bk-f5UscJlzYfrAeuQIB_M",
     authDomain: "ambot-e9d94.firebaseapp.com",
@@ -10,14 +9,11 @@ const firebaseConfig = {
     measurementId: "G-99VF17TSEK"
   };
 
-// Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// Reference to the wishlist in the database
 const wishlistRef = database.ref("wishlist");
 
-// Handle form submission
 document.getElementById("wishlistForm").addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -25,7 +21,6 @@ document.getElementById("wishlistForm").addEventListener("submit", (e) => {
     const wishlistLink = document.getElementById("wishlistLink").value.trim();
 
     if (codename && wishlistLink) {
-        // Push data to Firebase
         wishlistRef.push({ codename, wishlistLink })
             .then(() => {
                 console.log("Data added successfully");
@@ -34,7 +29,6 @@ document.getElementById("wishlistForm").addEventListener("submit", (e) => {
                 console.error("Error adding data to Firebase:", error);
             });
 
-        // Clear the form
         document.getElementById("wishlistForm").reset();
     } else {
         console.error("Both codename and wishlist link are required.");
@@ -42,10 +36,9 @@ document.getElementById("wishlistForm").addEventListener("submit", (e) => {
 });
 
 
-// Listen for changes in the database and update the UI
 wishlistRef.on("value", (snapshot) => {
     const wishlistContainer = document.getElementById("wishlistContainer");
-    wishlistContainer.innerHTML = ""; // Clear previous content
+    wishlistContainer.innerHTML = "";
 
     const data = snapshot.val();
     if (data) {
