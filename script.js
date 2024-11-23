@@ -63,14 +63,16 @@ onValue(wishlistRef, (snapshot) => {
             const wishlistDiv = document.createElement("div");
             wishlistDiv.className = "wishlist-item";
 
-            // Format links and plain text properly
             wishlistDiv.innerHTML = `
-                <strong>${item.codename}</strong><br>
-                ${item.wishlistLinks.map(link => isValidURL(link) 
-                    ? `<a href="${link}" target="_blank">${link}</a><br>` 
-                    : `<span>${link}</span><br>`
-                ).join("")}
-            `;
+            <strong>${item.codename}</strong><br>
+            ${item.wishlistLinks.map(link => {
+                const [url, description] = link.split(" (");
+                const cleanedDescription = description ? `(${description.replace(")", "")})` : ""; // Remove trailing ")"
+                return isValidURL(url) 
+                    ? `<a href="${url}" target="_blank">${url}</a> ${cleanedDescription}<br>` 
+                    : `<span>${link}</span><br>`;
+            }).join("")}
+        `;
             wishlistContainer.appendChild(wishlistDiv);
         });
     }
