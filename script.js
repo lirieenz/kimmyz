@@ -51,7 +51,6 @@ document.getElementById("wishlistForm").addEventListener("submit", (e) => {
     }
 });
 
-// Display Wishlist Items
 onValue(wishlistRef, (snapshot) => {
     const wishlistContainer = document.getElementById("wishlistContainer");
     wishlistContainer.innerHTML = "";
@@ -64,16 +63,22 @@ onValue(wishlistRef, (snapshot) => {
             wishlistDiv.className = "wishlist-item";
 
             wishlistDiv.innerHTML = `
-            <strong>${item.codename}</strong><br>
-            ${item.wishlistLinks.map(link => {
-                const [url, description] = link.split(" (");
-                const cleanedDescription = description ? `(${description.replace(")", "")})` : ""; // Remove trailing ")"
-                return isValidURL(url) 
-                    ? `<a href="${url}" target="_blank">${url}</a> ${cleanedDescription}<br>` 
-                    : `<span>${link}</span><br>`;
-            }).join("")}
-        `;
+                <strong>${item.codename}</strong><br>
+                ${item.wishlistLinks.map(link => {
+                    // Split the string into URL and description parts
+                    const match = link.match(/(https?:\/\/[^\s]+)(?:\s*\((.*)\))?/); // Match URL and optional description
+                    if (match) {
+                        const url = match[1]; // The actual URL
+                        const description = match[2] ? `(${match[2]})` : ""; // The description, if present
+                        return `<a href="${url}" target="_blank">${url}</a> ${description}<br>`;
+                    } else {
+                        // If no valid URL is found, display as plain text
+                        return `<span>${link}</span><br>`;
+                    }
+                }).join("")}
+            `;
             wishlistContainer.appendChild(wishlistDiv);
         });
     }
 });
+
